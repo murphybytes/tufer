@@ -14,7 +14,7 @@ type Listener struct {
 
 func NewListener(service string)( *Listener, error ) {
 
-	tcpAddr, err := net.ResolveTCPAddr( "ip4", service )
+	tcpAddr, err := net.ResolveTCPAddr( "tcp4", service )
 
 	if err != nil {
 		return nil, err
