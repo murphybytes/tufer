@@ -8,25 +8,11 @@ import (
 
 type Client struct {
 	serverAddr *net.TCPAddr
-	localAddr  *net.TCPAddr
 }
 
 
 
-func NewClient( service string, laddr string  ) ( *Client, error ) {
-
-	var localAddr *net.TCPAddr
-	
-	if len(laddr) > 0 {
-		
-		la, err := net.ResolveTCPAddr( "tcp4", laddr )
-		
-		if err != nil {
-			return nil, err
-		}
-
-		localAddr = la
-	}
+func NewClient( service string  ) ( *Client, error ) {
 
 	serverAddr, err := net.ResolveTCPAddr( "tcp4", service )
 	
@@ -34,13 +20,13 @@ func NewClient( service string, laddr string  ) ( *Client, error ) {
 		return nil, err
 	}
 
-	return &Client{ serverAddr, localAddr }, nil
+	return &Client{ serverAddr }, nil
 
 }
 
 func ( c *Client ) Connect() ( *Connection, error ) {
 
-	controlChannel, err := net.DialTCP("tcp", c.localAddr, c.serverAddr )
+	controlChannel, err := net.DialTCP("tcp", nil, c.serverAddr )
 
 	if err != nil {
 		return nil, err
