@@ -18,7 +18,7 @@ func NewListener(service string)( *Listener, error ) {
 
 	if err != nil {
 		return nil, err
-	}	
+	}
 
 	listener, err := net.ListenTCP( "tcp", tcpAddr )
 
@@ -26,17 +26,17 @@ func NewListener(service string)( *Listener, error ) {
 		return nil, err
 	}
 
-	return &Listener{listener, tcpAddr}, nil	
+	return &Listener{listener, tcpAddr}, nil
 
 }
 
 func ( l *Listener ) Accept()( *Connection, error ) {
 	controlChannel, err := l.listener.Accept()
-	
+
 	if err != nil {
 		return nil, err
 	}
 
 	return &Connection{controlChannel.(*net.TCPConn)}, nil
-	 
+
 }
