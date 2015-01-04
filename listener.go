@@ -9,10 +9,11 @@ import (
 type Listener struct {
 	listener *net.TCPListener
 	tcpAddr  *net.TCPAddr
+	logger   Logger
 }
 
 
-func NewListener(service string)( *Listener, error ) {
+func NewListener(service string, logger Logger )( *Listener, error ) {
 
 	tcpAddr, err := net.ResolveTCPAddr( "tcp4", service )
 
@@ -26,7 +27,7 @@ func NewListener(service string)( *Listener, error ) {
 		return nil, err
 	}
 
-	return &Listener{listener, tcpAddr}, nil
+	return &Listener{listener, tcpAddr, logger}, nil
 
 }
 
@@ -37,6 +38,10 @@ func ( l *Listener ) Accept()( *Connection, error ) {
 		return nil, err
 	}
 
-	return &Connection{controlChannel.(*net.TCPConn)}, nil
+	return NewConnection(controlChannel.(*net.TCPConn), l.logger ), nil
 
+}
+
+func (l *Listener ) Close() {
+	l.listener.Close()
 }

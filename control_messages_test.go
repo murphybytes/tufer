@@ -17,7 +17,7 @@ import (
     packege  := "one two three "
     expected := []string{ "one", "two", "three" }
     actual   := Unpack( packege )
-    
+
     if len(expected) != len(actual) {
       t.Error( "Length mismatch expected", len(expected), "actual", len(actual))
     }

@@ -8,19 +8,20 @@ import (
 
 type Client struct {
 	serverAddr *net.TCPAddr
+	logger     Logger
 }
 
 
 
-func NewClient( service string  ) ( *Client, error ) {
+func NewClient( service string, logger Logger  ) ( *Client, error ) {
 
 	serverAddr, err := net.ResolveTCPAddr( "tcp4", service )
-	
+
 	if err != nil {
 		return nil, err
 	}
 
-	return &Client{ serverAddr }, nil
+	return &Client{ serverAddr, logger }, nil
 
 }
 
@@ -32,5 +33,5 @@ func ( c *Client ) Connect() ( *Connection, error ) {
 		return nil, err
 	}
 
-	return &Connection{ controlChannel }, nil
+	return NewConnection( controlChannel, c.logger ), nil
 }
